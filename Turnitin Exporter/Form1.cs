@@ -68,7 +68,7 @@ namespace Turnitin_Exporter
                 //FilesText filesText = new FilesText();
                 for (int i = 1; i <= pdfDoc.GetNumberOfPages(); i++)
                 {
-                    string fixedString = iText.Kernel.Pdf.Canvas.Parser.PdfTextExtractor.GetTextFromPage(pdfDoc.GetPage(i)).Replace(System.Environment.NewLine, " ");
+                    string fixedString = iText.Kernel.Pdf.Canvas.Parser.PdfTextExtractor.GetTextFromPage(pdfDoc.GetPage(i));
                     text.Append(fixedString);
                 }
                 return text.ToString();
