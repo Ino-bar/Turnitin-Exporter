@@ -10,6 +10,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.Office;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace Turnitin_Exporter
 {
@@ -30,10 +32,13 @@ namespace Turnitin_Exporter
             for (int i = 0; i < FilesToParse.Length; i++)
             {
                 AllPdfFilesAllPagesList.AddPdfFilePagesToList(pdfParser.ExtractTextFromPdf(FilesInFolder.files[i]));
-                SubstringFromfilesText.GetStudentIDAndFeedback(AllPdfFilesAllPagesList.ListOfListOfPagesOfPdfFiles[i]);
+                SubstringFromfilesText.GetStudentID(AllPdfFilesAllPagesList.ListOfListOfPagesOfPdfFiles[i]);
+                SubstringFromfilesText.GetStudentFeedback(AllPdfFilesAllPagesList.ListOfListOfPagesOfPdfFiles[i]);
             }
             Writer textWriter = new Writer();
+            ExcelFile newExcelFile = new ExcelFile();
             textWriter.WriteIDsToTextFile(SubstringFromfilesText.ID, SubstringFromfilesText.Feedback);
+            newExcelFile.SaveExcelFile(textWriter.WriteFeedbackToExcelFile(newExcelFile.CreateNewExcelFile(), SubstringFromfilesText.ID, SubstringFromfilesText.Feedback));
         }
 
         public string[] ChooseFolder()
@@ -76,9 +81,9 @@ namespace Turnitin_Exporter
     */
     public class PDFParser
     {
-        List<string> PagesOfText = new List<string>();
         public List<string> ExtractTextFromPdf(string path)
         {
+            List<string> PagesOfText = new List<string>();
             PdfDocument pdfDoc = new PdfDocument(new PdfReader(path));
             if (pdfDoc.GetNumberOfPages() > 0)
             {
@@ -103,36 +108,33 @@ namespace Turnitin_Exporter
         private string FeedbackfromString { get; set; }
         private string FeedbacktoString { get; set; }
 
-        public void GetStudentIDAndFeedback(List<string> textList)
+        public void GetStudentID(List<string> textList)
         {
-            //TextWriter tw = new StreamWriter(@"C:\Users\James\Documents\transferred files\IDs and Feedback\IDs and Feedback.txt");
-            for (int i = 0; i < textList.Count; i++)
-            {
-                IDfromString = "SUBMISSION ID ";
-                IDtoString = " CHARACTER";
+            //for (int i = 0; i < textList.Count; i++)
+            //{
+            var match = textList.FirstOrDefault(stringToCheck => stringToCheck.Contains("SUBMISSION ID "));
+            IDfromString = "SUBMISSION ID ";
+                IDtoString = " CHARACTER COUNT";
+                int IDFrom = match.IndexOf(IDfromString) + IDfromString.Length;
+                int IDTo = match.LastIndexOf(IDtoString);
+                ID.Add(match.Substring(IDFrom, IDTo - IDFrom));
+            //}
+        }
+        public void GetStudentFeedback(List<string> textList)
+        {
+            //for (int i = 0; i < textList.Count; i++)
+            //{
+                string match = textList.FirstOrDefault(stringToCheck => stringToCheck.Contains("Instructor"));
                 FeedbackfromString = "Instructor";
                 FeedbacktoString = "PAGE 1";
-                if (textList[i].Contains(IDfromString) & textList[i].Contains(IDtoString))
-                {
-                    int IDFrom = textList[i].IndexOf(IDfromString) + IDfromString.Length;
-                    int IDTo = textList[i].LastIndexOf(IDtoString);
-                    ID.Add(textList[i].Substring(IDFrom, IDTo - IDFrom));
-                }
-                else if (textList[i].Contains(FeedbackfromString) & textList[i].Contains(FeedbacktoString))
-                { 
-                    int stringFrom = textList[i].IndexOf(FeedbackfromString) + FeedbackfromString.Length;
-                    int stringTo = textList[i].LastIndexOf(FeedbacktoString);
-                    Feedback.Add(textList[i].Substring(stringFrom, stringTo - stringFrom));
-                }
-            }
-            /*
-            for(int i = 0; i < Feedback.Count; i++)
+                int stringFrom = match.IndexOf(FeedbackfromString) + FeedbackfromString.Length;
+                int stringTo = match.LastIndexOf(FeedbacktoString);
+            if (stringTo < 0)
             {
-                tw.WriteLine(ID[i]);
-                tw.WriteLine(Feedback[i]);
+                stringTo = match.Length;
             }
-            tw.Close();
-            */
+            Feedback.Add(match.Substring(stringFrom, stringTo - stringFrom));
+            //}
         }
     }
     public class Writer
@@ -147,9 +149,34 @@ namespace Turnitin_Exporter
             }
             tw.Close();
         }
-        public void WriteFeedbackToExcelFile(List<string> id, List<string> feedback)
+        public Excel.Application WriteFeedbackToExcelFile(Excel.Application excelfile, List<string> id, List<string> feedback)
         {
-
+            excelfile.ActiveSheet.Cells[1, 1] = "Paper ID";
+            excelfile.ActiveSheet.Cells[1, 2] = "Feedback";
+            for (int i = 0; i < feedback.Count; i++)
+            {
+                excelfile.ActiveSheet.Cells[i + 1, 1] = id[i];
+                excelfile.ActiveSheet.Cells[i + 1, 2] = feedback[i];
+            }
+            return excelfile;
+        }
+    }
+    public class ExcelFile
+    {
+        public Excel.Application CreateNewExcelFile()
+        {
+            Excel.Application ExcelFile = new Excel.Application();
+            Excel._Workbook workbook = (Excel._Workbook)(ExcelFile.Workbooks.Add(""));
+            Excel._Worksheet worksheet = (Excel._Worksheet)workbook.ActiveSheet;
+            return ExcelFile;
+        }
+        public void SaveExcelFile(Excel.Application file)
+        {
+            file.ActiveWorkbook.SaveAs(@"C:\Users\James\Documents\transferred files\IDs and Feedback\IDs and Feedback.xlsx", Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookDefault, Type.Missing, Type.Missing,
+        false, false, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlNoChange,
+        Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+            file.ActiveWorkbook.Close();
+            file.Quit();
         }
     }
 }
