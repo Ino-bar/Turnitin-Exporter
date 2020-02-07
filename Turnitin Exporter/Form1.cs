@@ -26,15 +26,14 @@ namespace Turnitin_Exporter
             FilesInFolder.SetFilesInFolderToDirectory(FilesToParse);
             FilesTextSubstring SubstringFromfilesText = new FilesTextSubstring();
             PDFParser pdfParser = new PDFParser();
-            PdfFilesContentsAsString OriginalText = new PdfFilesContentsAsString();
+            AllPdfFilesListsOfPages AllPdfFilesAllPagesList = new AllPdfFilesListsOfPages();
             for (int i = 0; i < FilesToParse.Length; i++)
             {
-                OriginalText.SetText(pdfParser.ExtractTextFromPdf(FilesInFolder.files[i]));
-                //SubstringFromfilesText.SetTextFromFiles(pdfParser.ExtractTextFromPdf(FilesInFolder.files[i]));
-                SubstringFromfilesText.GetStudentIDAndFeedback(OriginalText.textFromFiles);
-            //filesText.WriteIDsToFile();
-            //filesText.WriteFeedbackToFile();
+                AllPdfFilesAllPagesList.AddPdfFilePagesToList(pdfParser.ExtractTextFromPdf(FilesInFolder.files[i]));
+                SubstringFromfilesText.GetStudentIDAndFeedback(AllPdfFilesAllPagesList.ListOfListOfPagesOfPdfFiles[i]);
             }
+            Writer textWriter = new Writer();
+            textWriter.WriteIDsToTextFile(SubstringFromfilesText.ID, SubstringFromfilesText.Feedback);
         }
 
         public string[] ChooseFolder()
@@ -57,30 +56,40 @@ namespace Turnitin_Exporter
             files = filesToParse;
         }
     }
-    public class PdfFilesContentsAsString
+    public class AllPdfFilesListsOfPages
     {
-        public List<string> textFromFiles = new List<string>();
-        public void SetText(string pageText)
+        public List<List<string>> ListOfListOfPagesOfPdfFiles = new List<List<string>>();
+        public void AddPdfFilePagesToList (List<string> pageList)
         {
-            textFromFiles.Add(pageText);
+            ListOfListOfPagesOfPdfFiles.Add(pageList);
         }
     }
+    /*
+    public class PagesOfPdfFileAsStrings
+    {
+        public List<string> textFromFiles { get; set; }
+        public void SetText(List<string> pageText)
+        {
+            textFromFiles = pageText;
+        }
+    }
+    */
     public class PDFParser
     {
-        public string ExtractTextFromPdf(string path)
+        List<string> PagesOfText = new List<string>();
+        public List<string> ExtractTextFromPdf(string path)
         {
-
             PdfDocument pdfDoc = new PdfDocument(new PdfReader(path));
-            StringBuilder text = new StringBuilder();
             if (pdfDoc.GetNumberOfPages() > 0)
             {
-                //FilesText filesText = new FilesText();
                 for (int i = 1; i <= pdfDoc.GetNumberOfPages(); i++)
                 {
-                    string fixedString = iText.Kernel.Pdf.Canvas.Parser.PdfTextExtractor.GetTextFromPage(pdfDoc.GetPage(i));
-                    text.Append(fixedString);
+                    StringBuilder text = new StringBuilder();
+                    string pageOfText = iText.Kernel.Pdf.Canvas.Parser.PdfTextExtractor.GetTextFromPage(pdfDoc.GetPage(i));
+                    text.Append(pageOfText);
+                    PagesOfText.Add(text.ToString());
                 }
-                return text.ToString();
+                return PagesOfText;
             }
             else return null;
         }
@@ -89,48 +98,58 @@ namespace Turnitin_Exporter
     {
         public List<string> ID = new List<string>();
         public List<string> Feedback = new List<string>();
+        private string IDfromString {get; set;}
+        private string IDtoString { get; set; }
+        private string FeedbackfromString { get; set; }
+        private string FeedbacktoString { get; set; }
 
         public void GetStudentIDAndFeedback(List<string> textList)
         {
             //TextWriter tw = new StreamWriter(@"C:\Users\James\Documents\transferred files\IDs and Feedback\IDs and Feedback.txt");
             for (int i = 0; i < textList.Count; i++)
             {
-                
-                int IDFrom = textList[i].IndexOf("SUBMISSION ID ") + "SUBMISSION ID ".Length;
-                int IDTo = textList[i].LastIndexOf(" CHARACTER");
-                ID.Add(textList[i].Substring(IDFrom, IDTo - IDFrom));
-                Console.WriteLine(ID[i]);
-                //tw.WriteLine(ID[i]);
-                int stringFrom = textList[i].IndexOf("Instructor") + "Instructor".Length;
-                int stringTo = textList[i].LastIndexOf("PAGE 1");
-                Feedback.Add(textList[i].Substring(stringFrom, stringTo - stringFrom));
-                Console.WriteLine(Feedback[i]);
-                //tw.WriteLine(Feedback[i]);
-                //return result[i];
+                IDfromString = "SUBMISSION ID ";
+                IDtoString = " CHARACTER";
+                FeedbackfromString = "Instructor";
+                FeedbacktoString = "PAGE 1";
+                if (textList[i].Contains(IDfromString) & textList[i].Contains(IDtoString))
+                {
+                    int IDFrom = textList[i].IndexOf(IDfromString) + IDfromString.Length;
+                    int IDTo = textList[i].LastIndexOf(IDtoString);
+                    ID.Add(textList[i].Substring(IDFrom, IDTo - IDFrom));
+                }
+                else if (textList[i].Contains(FeedbackfromString) & textList[i].Contains(FeedbacktoString))
+                { 
+                    int stringFrom = textList[i].IndexOf(FeedbackfromString) + FeedbackfromString.Length;
+                    int stringTo = textList[i].LastIndexOf(FeedbacktoString);
+                    Feedback.Add(textList[i].Substring(stringFrom, stringTo - stringFrom));
+                }
             }
-            //tw.Close();
-        }
-        public void WriteIDsToFile()
-        {
-            TextWriter tw = new StreamWriter(@"C:\Users\James\Documents\transferred files\IDs\IDs.txt");
-
-            foreach (String s in ID)
-                tw.WriteLine(s);
-
+            /*
+            for(int i = 0; i < Feedback.Count; i++)
+            {
+                tw.WriteLine(ID[i]);
+                tw.WriteLine(Feedback[i]);
+            }
             tw.Close();
-            //System.IO.File.WriteAllLines(@"C:\Users\James\Documents\transferred files\IDs\IDs.txt", ID);
-            //System.IO.File.WriteAllLines(@"C:\Users\James\Documents\transferred files\Feedback\Feedback.txt", Feedback);
+            */
         }
-        public void WriteFeedbackToFile()
+    }
+    public class Writer
+    {
+        public void WriteIDsToTextFile(List<string> id, List<string> feedback)
         {
-            TextWriter tw = new StreamWriter(@"C:\Users\James\Documents\transferred files\Feedback\Feedback.txt");
-
-            foreach (String s in Feedback)
-                tw.WriteLine(s);
-
+            TextWriter tw = new StreamWriter(@"C:\Users\James\Documents\transferred files\IDs and Feedback\IDs and Feedback.txt");
+            for (int i = 0; i < feedback.Count; i++)
+            {
+                tw.WriteLine(id[i]);
+                tw.WriteLine(feedback[i]);
+            }
             tw.Close();
-            //System.IO.File.WriteAllLines(@"C:\Users\James\Documents\transferred files\IDs\IDs.txt", ID);
-            //System.IO.File.WriteAllLines(@"C:\Users\James\Documents\transferred files\Feedback\Feedback.txt", Feedback);
+        }
+        public void WriteFeedbackToExcelFile(List<string> id, List<string> feedback)
+        {
+
         }
     }
 }

@@ -15,15 +15,15 @@ namespace Turnitin_Exporter_Testing_Unit
         [Fact]
         public string[] getArrayOfPdfFilesInFolder()
         {
-            filesInFolder = System.IO.Directory.GetFiles("Z:\\chemistry\\2019-20\\Blackboard\\material chemistry essays", "*.pdf");
+            filesInFolder = System.IO.Directory.GetFiles(@"C:\Users\James\Documents\transferred files\New folder (2)", "*.pdf");
             //Assert.Equal(75, filesInFolder.Length);
-            Assert.NotEmpty(System.IO.Directory.GetFiles("Z:\\chemistry\\2019-20\\Blackboard\\material chemistry essays", "*.pdf"));
-            return System.IO.Directory.GetFiles("Z:\\chemistry\\2019-20\\Blackboard\\material chemistry essays", "*.pdf");
+            Assert.NotEmpty(System.IO.Directory.GetFiles(@"C:\Users\James\Documents\transferred files\New folder (2)", "*.pdf"));
+            return System.IO.Directory.GetFiles(@"C:\Users\James\Documents\transferred files\New folder (2)", "*.pdf");
         }
         [Fact]
         public void checkIfTextFileInFolder()
         {
-            Assert.Empty(System.IO.Directory.GetFiles("Z:\\chemistry\\2019-20\\Blackboard\\material chemistry essays", "*.txt"));
+            Assert.Empty(System.IO.Directory.GetFiles(@"C:\Users\James\Documents\transferred files\New folder (2)", "*.txt"));
         }
         [Fact]
         public void TestUnit1()
@@ -45,8 +45,8 @@ namespace Turnitin_Exporter_Testing_Unit
     public class PDFParser
     {
         [Theory]
-        [InlineData("Z:\\chemistry\\2019-20\\Blackboard\\material chemistry essays\\01180527.pdf")]
-        [InlineData("Z:\\chemistry\\2019-20\\Blackboard\\material chemistry essays\\01199862 materials coursework essay.pdf")]
+        [InlineData(@"C:\Users\James\Documents\transferred files\New folder (2)\01180527.pdf")]
+        [InlineData(@"C:\Users\James\Documents\transferred files\New folder (2)\01199862 materials coursework essay.pdf")]
         public string ExtractTextFromPdf(string path)
         {
 
@@ -61,6 +61,7 @@ namespace Turnitin_Exporter_Testing_Unit
                     string fixedString = iText.Kernel.Pdf.Canvas.Parser.PdfTextExtractor.GetTextFromPage(pdfDoc.GetPage(i));
                     text.Append(fixedString);
                 }
+                Assert.NotEqual(2, text.Length);
                 return text.ToString();
             }
             
@@ -72,7 +73,7 @@ namespace Turnitin_Exporter_Testing_Unit
     {
         public List<string> textFromFiles = new List<string>();
         [Theory]
-        [InlineData("Z:\\chemistry\\2019-20\\Blackboard\\material chemistry essays\\01180527.pdf")]
+        [InlineData(@"C:\Users\James\Documents\transferred files\New folder (2)\01180527.pdf")]
         public void SetText(string pageText)
         {
             textFromFiles.Add(pageText);

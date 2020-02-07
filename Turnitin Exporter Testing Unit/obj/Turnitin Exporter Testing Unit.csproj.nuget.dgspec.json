@@ -1,24 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\jdunbar\\Github\\Turnitin-Exporter\\Turnitin Exporter Testing Unit\\Turnitin Exporter Testing Unit.csproj": {}
+    "C:\\Users\\James\\source\\repos\\Turnitin Exporter\\Turnitin Exporter Testing Unit\\Turnitin Exporter Testing Unit.csproj": {}
   },
   "projects": {
-    "C:\\Users\\jdunbar\\Github\\Turnitin-Exporter\\Turnitin Exporter Testing Unit\\Turnitin Exporter Testing Unit.csproj": {
+    "C:\\Users\\James\\source\\repos\\Turnitin Exporter\\Turnitin Exporter Testing Unit\\Turnitin Exporter Testing Unit.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\jdunbar\\Github\\Turnitin-Exporter\\Turnitin Exporter Testing Unit\\Turnitin Exporter Testing Unit.csproj",
+        "projectUniqueName": "C:\\Users\\James\\source\\repos\\Turnitin Exporter\\Turnitin Exporter Testing Unit\\Turnitin Exporter Testing Unit.csproj",
         "projectName": "Turnitin Exporter Testing Unit",
-        "projectPath": "C:\\Users\\jdunbar\\Github\\Turnitin-Exporter\\Turnitin Exporter Testing Unit\\Turnitin Exporter Testing Unit.csproj",
-        "packagesPath": "C:\\Users\\jdunbar\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\jdunbar\\Github\\Turnitin-Exporter\\Turnitin Exporter Testing Unit\\obj\\",
+        "projectPath": "C:\\Users\\James\\source\\repos\\Turnitin Exporter\\Turnitin Exporter Testing Unit\\Turnitin Exporter Testing Unit.csproj",
+        "packagesPath": "C:\\Users\\James\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\James\\source\\repos\\Turnitin Exporter\\Turnitin Exporter Testing Unit\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Microsoft\\Xamarin\\NuGet\\"
         ],
         "configFilePaths": [
-          "C:\\Users\\jdunbar\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\James\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
@@ -30,8 +31,8 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "C:\\Users\\jdunbar\\Github\\Turnitin-Exporter\\Turnitin Exporter\\Turnitin Exporter.csproj": {
-                "projectPath": "C:\\Users\\jdunbar\\Github\\Turnitin-Exporter\\Turnitin Exporter\\Turnitin Exporter.csproj"
+              "C:\\Users\\James\\source\\repos\\Turnitin Exporter\\Turnitin Exporter\\Turnitin Exporter.csproj": {
+                "projectPath": "C:\\Users\\James\\source\\repos\\Turnitin Exporter\\Turnitin Exporter\\Turnitin Exporter.csproj"
               }
             }
           }
@@ -85,12 +86,12 @@
         }
       }
     },
-    "C:\\Users\\jdunbar\\Github\\Turnitin-Exporter\\Turnitin Exporter\\Turnitin Exporter.csproj": {
+    "C:\\Users\\James\\source\\repos\\Turnitin Exporter\\Turnitin Exporter\\Turnitin Exporter.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\jdunbar\\Github\\Turnitin-Exporter\\Turnitin Exporter\\Turnitin Exporter.csproj",
+        "projectUniqueName": "C:\\Users\\James\\source\\repos\\Turnitin Exporter\\Turnitin Exporter\\Turnitin Exporter.csproj",
         "projectName": "Turnitin Exporter",
-        "projectPath": "C:\\Users\\jdunbar\\Github\\Turnitin-Exporter\\Turnitin Exporter\\Turnitin Exporter.csproj"
+        "projectPath": "C:\\Users\\James\\source\\repos\\Turnitin Exporter\\Turnitin Exporter\\Turnitin Exporter.csproj"
       },
       "frameworks": {
         "net472": {}
