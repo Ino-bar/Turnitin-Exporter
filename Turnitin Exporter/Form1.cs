@@ -141,7 +141,8 @@ namespace Turnitin_Exporter
     {
         public void WriteIDsToTextFile(List<string> id, List<string> feedback)
         {
-            TextWriter tw = new StreamWriter(@"C:\Users\James\Documents\transferred files\IDs and Feedback\IDs and Feedback.txt");
+            //TextWriter tw = new StreamWriter(@"C:\Users\James\Documents\transferred files\IDs and Feedback\IDs and Feedback.txt");
+            TextWriter tw = new StreamWriter(@"Z:\chemistry\2019-20\Blackboard\material chemistry essays\IDs and Feedback\IDs and Feedback.txt");
             for (int i = 0; i < feedback.Count; i++)
             {
                 tw.WriteLine(id[i]);
@@ -172,9 +173,12 @@ namespace Turnitin_Exporter
         }
         public void SaveExcelFile(Excel.Application file)
         {
-            file.ActiveWorkbook.SaveAs(@"C:\Users\James\Documents\transferred files\IDs and Feedback\IDs and Feedback.xlsx", Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookDefault, Type.Missing, Type.Missing,
-        false, false, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlNoChange,
-        Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+            //file.ActiveWorkbook.SaveAs(@"C:\Users\James\Documents\transferred files\IDs and Feedback\IDs and Feedback.xlsx", Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookDefault, Type.Missing, Type.Missing,
+            //false, false, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlNoChange,
+            //Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+            file.ActiveWorkbook.SaveAs(@"Z:\chemistry\2019-20\Blackboard\material chemistry essays\IDs and Feedback\IDs and Feedback.xlsx", Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookDefault, Type.Missing, Type.Missing,
+            false, false, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlNoChange,
+            Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
             file.ActiveWorkbook.Close();
             file.Quit();
         }

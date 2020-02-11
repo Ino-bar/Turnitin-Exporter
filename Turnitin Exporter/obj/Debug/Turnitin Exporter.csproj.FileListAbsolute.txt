@@ -71,3 +71,4 @@ C:\Users\jdunbar\Github\Turnitin-Exporter\Turnitin Exporter\obj\Debug\Turnitin E
 C:\Users\jdunbar\Github\Turnitin-Exporter\Turnitin Exporter\obj\Debug\Turnitin Exporter.exe
 C:\Users\jdunbar\Github\Turnitin-Exporter\Turnitin Exporter\obj\Debug\Turnitin Exporter.pdb
 C:\Users\James\source\repos\Turnitin Exporter\Turnitin Exporter\obj\Debug\Turnitin Exporter.csproj.ResolveComReference.cache
+C:\Users\jdunbar\Github\Turnitin-Exporter\Turnitin Exporter\obj\Debug\Turnitin Exporter.csproj.ResolveComReference.cache
